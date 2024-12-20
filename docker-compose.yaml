@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: postgres:17-alpine3.21
+    container_name: postgres_17_test
+    environment:
+      POSTGRES_DB: "test_db"
+      POSTGRES_USER: "test_user"
+      POSTGRES_PASSWORD: "test_password"
+    volumes:
+      - ./initdb/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"
