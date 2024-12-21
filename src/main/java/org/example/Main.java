@@ -15,8 +15,6 @@ public class Main {
         entityOne.setColumnOne("Test data");
         entityOne.setColumnTwo(777);
 
-        entityOneService.save(entityOne);
-        System.out.println("-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-        System.out.println(entityOne);
+        System.out.println(entityOneService.save(entityOne));
     }
 }
