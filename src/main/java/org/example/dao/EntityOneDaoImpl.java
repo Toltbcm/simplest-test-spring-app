@@ -1,37 +1,36 @@
 package org.example.dao;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
 import org.example.model.EntityOne;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class EntityOneDaoImpl implements EntityOneDao {
-    private final EntityManagerFactory entityManagerFactory;
+    private final SessionFactory sessionFactory;
 
-    public EntityOneDaoImpl(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
+    public EntityOneDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public EntityOne save(EntityOne entityOne) {
-        EntityTransaction entityTransaction = null;
-        EntityManager entityManager = null;
+        Session session = null;
+        Transaction transaction = null;
         try {
-            entityManager = entityManagerFactory.createEntityManager();
-            entityTransaction = entityManager.getTransaction();
-            entityTransaction.begin();
-            entityManager.persist(entityOne);
-            entityTransaction.commit();
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.persist(entityOne);
+            transaction.commit();
         } catch (Exception e) {
-            if (entityTransaction != null) {
-                entityTransaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
             }
             throw new RuntimeException("Can't save EntityOne: " + entityOne, e);
         } finally {
-            if (entityManager != null) {
-                entityManager.close();
+            if (session != null) {
+                session.close();
             }
         }
         return entityOne;
